@@ -1,0 +1,7 @@
+<p>login works!</p>
+
+<input type="checkbox" [(ngModel)]="isRegistered" > 
+
+<app-registered *ngIf="isRegistered" ></app-registered>
+
+<app-unregistered *ngIf="!isRegistered"></app-unregistered>

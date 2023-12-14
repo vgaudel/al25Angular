@@ -1,0 +1,11 @@
+<form #formUser="ngForm">
+    <label>id:</label>{{user.id}} <br/>  
+    <label>username:</label>
+       <input [(ngModel)]="user.username" name="username" required pattern="^[a-zA-Z].+" /> <br/>   
+
+    <label>password:</label>
+       <input [(ngModel)]="user.password" required minlength="3" name="password" > <br/> 
+
+    <button (click)="onSave()" [disabled]="!formUser.form.valid"> Save</button>
+</form>
+message: {{message}}

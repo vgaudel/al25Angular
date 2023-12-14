@@ -1,0 +1,6 @@
+<p>serie works!</p>
+<label>Entrez la taille de la série de calcul :</label> <input type="number" [(ngModel)]="tailleSerieAff" >
+<button class="btn btn-primary"  (click)="rechargerSerie()" [disabled]="isDisabled" >Charger Calculs</button>
+
+
+<div class="card" *ngFor="let c of serieCalculs">{{c.op1}} {{c.operator}} {{c.op2}}</div>

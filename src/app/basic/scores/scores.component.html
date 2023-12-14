@@ -1,0 +1,16 @@
+<p>scores works!</p>
+<button (click)="genererScores()" >Générer 100 scores</button>
+
+<input type="checkbox" [(ngModel)]="montrerScores" > voir le tableau des scores<br>
+     
+
+<table border="1" *ngIf="montrerScores"> 
+    <thead>
+    <tr> <th>Utilisateur</th> <th>Bonnes Réponses</th> <th>Tentatives</th> <th>%age de Réussite</th> </tr> 
+    </thead>
+    <tbody>
+    <tr *ngFor="let s of scoreTab" > 
+        <td>{{s.user}}</td> <td>{{s.bonneReponses}}</td> <td>{{s.nbTotalCalcul}}</td>  <td>{{percentage(s)}}</td>
+    </tr> 
+    </tbody>
+</table>
