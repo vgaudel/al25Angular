@@ -13,6 +13,8 @@ export class UnregisteredComponent {
 
   }
 
+  public hide : boolean = false;
+
   public user = new User(); //user to add or update
 
   public message :string ="" ;

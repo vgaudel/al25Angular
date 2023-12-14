@@ -3,4 +3,9 @@
 <button class="btn btn-primary"  (click)="rechargerSerie()" [disabled]="isDisabled" >Charger Calculs</button>
 
 
-<div class="card" *ngFor="let c of serieCalculs">{{c.op1}} {{c.operator}} {{c.op2}}</div>
+<div class="card" *ngFor="let c of serieCalculs">{{c.op1}} {{c.operator}} {{c.op2}}
+    <input type="number" [(ngModel)]="c.reponseUser" required>
+    
+</div>
+
+<button class="btn btn-primary" (click)="postReponse()">Valider</button>

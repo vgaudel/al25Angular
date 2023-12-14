@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Calcul }from '../../common/data/calcul';
+import { ScoresDataService } from '../../common/service/scores-data.service';
 
 @Component({
   selector: 'app-serie',
@@ -8,9 +9,13 @@ import { Calcul }from '../../common/data/calcul';
 })
 export class SerieComponent {
 
+  constructor(private _scoresDataService : ScoresDataService){
+
+  }
+
   isDisabled : boolean = false;
 
-  calculTab : Calcul[] = [{"operator":"/","op1":9,"op2":3},{"operator":"-","op1":1,"op2":7},{"operator":"/","op1":8,"op2":2},{"operator":"/","op1":5,"op2":2},{"operator":"-","op1":6,"op2":9},{"operator":"/","op1":0,"op2":6},{"operator":"/","op1":1,"op2":3},{"operator":"+","op1":7,"op2":9},{"operator":"+","op1":6,"op2":8},{"operator":"/","op1":3,"op2":9},{"operator":"-","op1":5,"op2":3},{"operator":"+","op1":8,"op2":5},{"operator":"+","op1":9,"op2":7},{"operator":"*","op1":8,"op2":5},{"operator":"-","op1":4,"op2":8},{"operator":"/","op1":1,"op2":6},{"operator":"*","op1":4,"op2":3},{"operator":"+","op1":8,"op2":2},{"operator":"-","op1":1,"op2":7},{"operator":"-","op1":1,"op2":4},{"operator":"-","op1":9,"op2":4},{"operator":"/","op1":2,"op2":6},{"operator":"-","op1":4,"op2":1},{"operator":"+","op1":6,"op2":4},{"operator":"/","op1":1,"op2":5},{"operator":"/","op1":3,"op2":6},{"operator":"+","op1":6,"op2":4},{"operator":"+","op1":7,"op2":3},{"operator":"-","op1":2,"op2":8},{"operator":"+","op1":9,"op2":5},{"operator":"-","op1":9,"op2":1},{"operator":"-","op1":2,"op2":5},{"operator":"+","op1":1,"op2":2},{"operator":"*","op1":2,"op2":4},{"operator":"-","op1":5,"op2":6},{"operator":"-","op1":5,"op2":6},{"operator":"/","op1":0,"op2":9},{"operator":"/","op1":4,"op2":7},{"operator":"*","op1":5,"op2":6},{"operator":"+","op1":4,"op2":5},{"operator":"/","op1":1,"op2":6},{"operator":"+","op1":1,"op2":5},{"operator":"/","op1":0,"op2":7},{"operator":"*","op1":5,"op2":3},{"operator":"+","op1":2,"op2":4},{"operator":"*","op1":2,"op2":2},{"operator":"+","op1":3,"op2":3},{"operator":"*","op1":8,"op2":1},{"operator":"*","op1":9,"op2":7},{"operator":"+","op1":9,"op2":9}];
+  //alculTab : Calcul[] = [{"operator":"/","op1":9,"op2":3},{"operator":"-","op1":1,"op2":7},{"operator":"/","op1":8,"op2":2},{"operator":"/","op1":5,"op2":2},{"operator":"-","op1":6,"op2":9},{"operator":"/","op1":0,"op2":6},{"operator":"/","op1":1,"op2":3},{"operator":"+","op1":7,"op2":9},{"operator":"+","op1":6,"op2":8},{"operator":"/","op1":3,"op2":9},{"operator":"-","op1":5,"op2":3},{"operator":"+","op1":8,"op2":5},{"operator":"+","op1":9,"op2":7},{"operator":"*","op1":8,"op2":5},{"operator":"-","op1":4,"op2":8},{"operator":"/","op1":1,"op2":6},{"operator":"*","op1":4,"op2":3},{"operator":"+","op1":8,"op2":2},{"operator":"-","op1":1,"op2":7},{"operator":"-","op1":1,"op2":4},{"operator":"-","op1":9,"op2":4},{"operator":"/","op1":2,"op2":6},{"operator":"-","op1":4,"op2":1},{"operator":"+","op1":6,"op2":4},{"operator":"/","op1":1,"op2":5},{"operator":"/","op1":3,"op2":6},{"operator":"+","op1":6,"op2":4},{"operator":"+","op1":7,"op2":3},{"operator":"-","op1":2,"op2":8},{"operator":"+","op1":9,"op2":5},{"operator":"-","op1":9,"op2":1},{"operator":"-","op1":2,"op2":5},{"operator":"+","op1":1,"op2":2},{"operator":"*","op1":2,"op2":4},{"operator":"-","op1":5,"op2":6},{"operator":"-","op1":5,"op2":6},{"operator":"/","op1":0,"op2":9},{"operator":"/","op1":4,"op2":7},{"operator":"*","op1":5,"op2":6},{"operator":"+","op1":4,"op2":5},{"operator":"/","op1":1,"op2":6},{"operator":"+","op1":1,"op2":5},{"operator":"/","op1":0,"op2":7},{"operator":"*","op1":5,"op2":3},{"operator":"+","op1":2,"op2":4},{"operator":"*","op1":2,"op2":2},{"operator":"+","op1":3,"op2":3},{"operator":"*","op1":8,"op2":1},{"operator":"*","op1":9,"op2":7},{"operator":"+","op1":9,"op2":9}];
 
   serieCalculs : Calcul[] = [];
 
@@ -19,10 +24,20 @@ export class SerieComponent {
   public rechargerSerie() : void {
     console.log("Donnée entrée par l'utilisateur : " + this.tailleSerieAff);
     this.serieCalculs = [];
-    let decalage = SerieComponent._getRandomInt(50);
-    for (let i = 0 ; i< this.tailleSerieAff ; i++){
-      this.serieCalculs.push(this.calculTab[(decalage + i)%50]);
-    }
+    
+    this._scoresDataService.getCalculs$(this.tailleSerieAff)
+    .subscribe({
+      next: (tab: Calcul[]) => { console.log("Tab reçu");this.serieCalculs = tab; },
+      error: (err: any) => { console.log(err); },
+      complete: () => { console.log('complete'); }
+    });
+    
+  }
+
+  public postReponse(){
+    this.serieCalculs.forEach(calcul => {
+      this._scoresDataService.postOneCalcul(calcul);
+    });
   }
 
   

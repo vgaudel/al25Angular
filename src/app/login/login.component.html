@@ -1,7 +1,16 @@
 <p>login works!</p>
 
-<input type="checkbox" [(ngModel)]="isRegistered" > 
+<!--input type="checkbox" [(ngModel)]="isRegistered" > 
 
 <app-registered *ngIf="isRegistered" ></app-registered>
 
-<app-unregistered *ngIf="!isRegistered"></app-unregistered>
+<app-unregistered *ngIf="!isRegistered"></app-unregistered -->
+
+    <mat-tab-group>
+        <mat-tab label="Unregistered">
+           <app-unregistered></app-unregistered>
+       </mat-tab>
+       <mat-tab label="Registered">
+           <app-registered></app-registered>
+        </mat-tab>
+    </mat-tab-group>

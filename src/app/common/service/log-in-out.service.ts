@@ -1,20 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { User } from '../data/user';
+import { CommonModule } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LogInOutService {
+export class LogInOutService implements OnInit {
 
   public tabUser : User[] = [];
-
+  private _couleurFondPreferee :string ="?";
   constructor() { 
-    //this.tabUser = JSON.parse(""+localStorage.getItem("tabUser"));
+  
+  }
+  ngOnInit(): void {
+    
+    this.tabUser = JSON.parse("Session Storage.tabUser"+sessionStorage.getItem("tabUser"));
+   
   }
 
   public addUser(user : User) {
     this.tabUser.push(user);
     console.log(JSON.stringify(this.tabUser));
-    //localStorage.setItem(JSON.stringify(this.tabUser),"tabUser");
+    sessionStorage.setItem(JSON.stringify(this.tabUser),"tabUser");
   }
 }
+  

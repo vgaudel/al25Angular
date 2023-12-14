@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Score } from '../../common/data/score';
+import { ScoresDataService } from '../../common/service/scores-data.service';
+
+
 @Component({
   selector: 'app-scores',
   templateUrl: './scores.component.html',
@@ -7,22 +10,32 @@ import { Score } from '../../common/data/score';
 })
 export class ScoresComponent {
 
-  montrerScores : boolean = false;
+  constructor(private _scoreDataService: ScoresDataService) {
 
-  scoreTab : Score[] = [];
-
-  public percentage(score : Score) : number {
-    return score.bonneReponses/score.nbTotalCalcul*100;
   }
 
-  public genererScores(){
-    for(let i = 0  ; i<100 ; i++){
 
-      this.scoreTab.push(new Score("User"+i,Math.floor(Math.random() * 100),100));
+  montrerScores: boolean = false;
 
-    }
-    console.log(JSON.stringify(this.scoreTab));
+  scoreTab: Score[] = [];
+
+  public percentage(score: Score): number {
+    return score.bonneReponses / score.nbTotalCalcul * 100;
   }
-  
+
+  public genererScores() {
+    this._scoreDataService.getScores$(50)
+      .subscribe({
+        next: (receivedScoreTab: Score[]) => { this.scoreTab = receivedScoreTab; },
+        error: (err: any) => { console.log(err); },
+        complete: () => { console.log('complete'); }
+      });
+    this._scoreDataService.getNbBonnesReponses$()
+      .subscribe(
+        {
+          next: (res: Number) => { console.log(res); },
+          error: (err: any) => { console.log(err); },
+          complete: () => { console.log('complete'); }
+        });
+  }
 }
-
